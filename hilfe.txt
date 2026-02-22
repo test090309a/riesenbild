@@ -1,0 +1,10 @@
+---jn 17:17 22.02.2026
+riesenbild aus comfy bildern.
+M:\projekte_2026\riesenbild
+
+bilder kommen in den ordner input
+ausgabe ist ein riesenbild
+maske ist ein png mit transparentem hintergrund, zb.
+
+
+
