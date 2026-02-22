@@ -9,6 +9,8 @@ können von comfy oder so erstellt werden.
 
 - python riesenbild.py -h
 
+- maske: ![Alternativer Text](input-maske.png)
+
 # Skript Ausgabe:
   python riesenbild.py --mask input-maske.png --output output.png 
   📁 2,146 originale Bilder gefunden in: M:\projekte_2026\riesenbild\input
