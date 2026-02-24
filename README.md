@@ -1,54 +1,97 @@
-# Riesenbild Mosaik Generator
-- agentic programing - jn@gemini&perplexity
+# Mosaic Generator aka Riesenbild
+![Header](docs/header.png)
 
-Erstellt aus vielen kleinen Bildern ein großes Mosaik aus eine Maske.
+Ein leistungsstarker **Python Mosaic Generator**, der aus tausenden Einzelbildern ein großes Mosaik erzeugt.  
+Die Form des Mosaiks wird durch eine **Maske** gesteuert, die **automatisch und robust** aus verschiedenen Ordnern geladen wird.
 
-# Benutzung
-- ins input verzeichnis kommen eine ganze menge bilder rein, mind. 2500.
-können von comfy oder so erstellt werden.
+---
+## ✨ Features
+- 🧠 Maskenbasiertes Rendering
+- ⚡ GPU-Beschleunigung (CUDA / PyTorch)
+- 🎯 Unique-Modus (jedes Bild max. einmal)
+- 🎨 Farb- & Kontrastkorrektur
+- 🔍 Preview- & High-Quality-Modus
+- 🧪 Debug-Ausgaben
 
-- python riesenbild.py -h
+---
+## 📂 Projektstruktur (empfohlen)
+project/
+│
+├── riesenbild.py
+├── input/             # Quell-Bilder
+│   ├── xxx.jpg
+│   ├── yyyy.png
+│   └── ...
+├── mask/              # Masken (optional)
+│   └── maske.png
+├── ergebnis.png
+└── README.md
 
-- maske: ![Alternativer Text](input-maske.png)
+🧠 Maske
+# Unterstützte Pfade
+- --mask maske.png
+- --mask mask/maske.png
+- --mask masks/maske.png
+- --mask C:\bilder\maske.png
 
-# Skript Ausgabe:
-  python riesenbild.py --mask input-maske.png --output output.png 
-  📁 2,146 originale Bilder gefunden in: M:\projekte_2026\riesenbild\input
-  📐 Original PNG: 382×289 = 110,398 Pixel
-  📐 Automatisch skaliert auf: 58×44 = 2,552 Tiles
-  ⚔️  Erstelle scharfe Maske...
-     - Harte Trennung bei 128
-     - Morphologische Reinigung
-     - Kontrastverstärkung Faktor 2.5
-  💀 Masken-Verteilung (scharf):
-     Helle Tiles: 531
-     Dunkle Tiles: 2,021
-     Kanten-Tiles: 486
-  📊 Analysiere Bilder für scharfe Kanten...
-     Analysiere 1000 repräsentative Bilder...
-     100/1000 Bilder analysiert
-     200/1000 Bilder analysiert
-     300/1000 Bilder analysiert
-     ...
-     ✅ 1000 Bilder analysiert
-     ⚔️  Baue Mosaik mit scharfen Kanten...
-     5% (128/2552)
-     10% (256/2552)
-     15% (383/2552
-     ...
-        95% (2425/2552)
-   100% (2552/2552)
-   Schärfe-Nachbearbeitung...
-  ✅ 2552 Tiles platziert
-  💾 Speichere unter: M:\projekte_2026\riesenbild\output.png
-  
-  🎉 Fertig! Dateigröße: 25.1 MB
-  ⏱️  Dauer: 72.8 Sekunden
-  
-  📊 STATISTIK:
-     Mosaik-Größe: 5800×2816 Pixel
-     Das sind etwa 16.3 Megapixel
-     Input-Ordner: M:\projekte_2026\riesenbild\input
-     Output-Ordner: M:\projekte_2026\riesenbild
+# 🚀 Schnellstart
+- python riesenbild.py --mask maske.png --output ergebnis.png
 
-     
+### ⚙️ Kommandozeilenoptionen (VOLLSTÄNDIG)
+## 🧾 Pflichtparameter
+# Option	Beschreibung
+- --mask <datei>	        Maske (automatische Suche: Projekt, input/, mask/, masks/, absoluter Pfad)
+📁 Input / Output
+# Option	Beschreibung
+- --input-folder <pfad>	Ordner mit Mosaik-Bildern (Standard: input/)
+- --output <datei>	    Ausgabedatei (PNG/JPG)
+🖼️ Mosaik & Geometrie
+# Option	Beschreibung
+- --tile-size <px>	    Kantenlänge eines Tiles in Pixeln
+- --unique	            Jedes Bild wird maximal einmal verwendet
+- --preview	            Schneller Vorschau-Modus (kleinere Tiles)
+- --high-quality	        Maximale Qualität (größere Tiles, langsamer)
+- --no-edge	            Deaktiviert Kantenerkennung (Maske wirkt nur als Helligkeitsmaske)
+
+👉 Hinweis zu --no-edge:
+Standardmäßig analysiert das Skript Kanten & Kontraste der Maske, um scharfe Übergänge zu erzeugen.
+Mit --no-edge wird diese Analyse komplett abgeschaltet.
+
+🎨 Farbe & Tonwerte
+# Option	Beschreibung
+- --saturation <faktor>	Farbsättigung (z. B. 1.2)
+- --vibrance <faktor>	    Vibrance-Verstärkung
+- --black-level <wert>	Schwarzwert (0–255)
+- --white-level <wert>	Weißwert (0–255)
+- --no-color	            Keine Farbkorrektur anwenden
+⚡ Performance
+# Option	Beschreibung
+- --batch-size <n>	    Batch-Größe für GPU/CPU
+- --cpu	                Erzwingt CPU-Modus (kein CUDA)
+🧪 Debug & Analyse
+# Option	Beschreibung
+- --debug	                Zusätzliche Debug-Ausgaben
+- --debug-mask	        Gibt die verarbeitete Maske separat aus
+
+### 🔍 Beispiele
+# Unique + High Quality
+- python riesenbild.py --mask maske.png --unique --high-quality
+# Vorschau ohne Farbe
+- python riesenbild.py --mask maske.png --preview --no-color
+# Ohne Kantenerkennung (glatter Look)
+- python riesenbild.py --mask maske.png --no-edge
+# High Quality + Unique + No Edge
+- python riesenbild.py --mask maske.png --high-quality --unique --no-edge
+
+
+### 📦 Abhängigkeiten
+pip install numpy pillow scipy torch torchvision
+
+## CUDA optional, aber empfohlen.
+
+# 🧾 Lizenz
+MIT License
+
+Ergebnis
+Ein robustes, fehlertolerantes Mosaik-System bereit für große Datensätze.
+Anwendung auf eigene Gefahr!

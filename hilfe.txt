@@ -7,4 +7,103 @@ ausgabe ist ein riesenbild
 maske ist ein png mit transparentem hintergrund, zb.
 
 
+---jn 22:26 22.02.2026
+-kleines riesenbild
+python riesenbild.py --mask input-maske.png --output output_klein.png --tiles 8000 --tile-width 40 --tile-height 40 --threshold 200 --edge-multiplier 6.0 --contrast 3.5
 
+-vorschaubild
+python riesenbild.py --mask input-maske.png --output output_vorschau.png --tiles 300 --tile-width 20 --tile-height 20 --no-postprocess
+
+-grosses
+python riesenbild.py --mask input-maske.png --output output_ultra.png --tiles 6000 --tile-width 150 --tile-height 150 --contrast 3.0 --sharpen 2.5
+
+
+---00:07 23.02.2026
+deepseek gpu
+
+# Vorschau
+python riesenbild_gpu_deepseek.py --mask totenkopf.png --output vorschau.jpg -p
+
+# Hochqualitativ
+python riesenbild_gpu_deepseek.py --mask totenkopf.png --output hochwertig.png -hq
+
+# Benutzerdefiniert
+python riesenbild_gpu_deepseek.py --mask totenkopf.png --output eigenes.png --tile-width 150 --tile-height 100 --tiles 5000 --contrast 2.8
+
+
+###############################################################
+*** O P T I O N S S C H A L T E R
+🎯 PFICHTANGABEN
+Option	Kurz	Beschreibung
+--mask	-m	PFAD ZUR PNG-VORLAGE - Das Bild, das als Maske dient (Schwarz/Weiß ideal)
+--output	-o	NAME DER AUSGABEDATEI - z.B. "ergebnis.png" oder "mosaik.jpg"
+📁 ORDNER-OPTIONEN
+Option	Kurz	Beschreibung	Standard
+--input-folder	-i	Input-Ordner mit den Quellbildern	./input
+--output-folder	-of	Output-Ordner für das Ergebnis	Skript-Verzeichnis
+🚀 SPEZIAL-MODI
+Option	Kurz	Beschreibung	Effekt
+--preview	-p	VORSCHAU-MODUS - Schnelle Berechnung	Tile-Größe: 40×25, Tiles: 500, kein Postprocessing
+--high-quality	-hq	HOCHQUALITATIV-MODUS - Maximale Qualität	Tile-Größe: 250×160, Tiles: 15000, max. Schärfe & Farbe
+📐 GRID-GRÖSSE
+Option	Kurz	Beschreibung	Standard
+--tiles	-t	Maximale Anzahl Tiles	3000
+--width	-w	Manuelle Grid-Breite (optional)	Automatisch
+--height	-hi	Manuelle Grid-Höhe (optional)	Automatisch
+🧩 TILE-GRÖSSE
+Option	Beschreibung	Standard
+--tile-width	Breite jedes einzelnen Tiles in Pixeln	100
+--tile-height	Höhe jedes einzelnen Tiles in Pixeln	64
+⚔️ SCHÄRFE-OPTIONEN
+Option	Kurz	Beschreibung	Standard
+--contrast	-c	Kontrastverstärkung (1.0-3.0)	2.5
+--edge-thickness	-et	Dicke der Kantenlinie in Tiles	2
+--edge-multiplier	-em	Kanten-Kontrast Multiplier	3.0
+--threshold	-th	Helligkeitsschwellwert (0-255)	128
+--sharpen	-s	Nachschärfungs-Faktor	2.0
+🎨 FARB-OPTIONEN
+Option	Kurz	Beschreibung	Standard
+--saturation	-sat	Sättigungsfaktor (0.0-2.0)	1.3
+--vibrance	-vib	Vibrance-Faktor (intelligente Sättigung)	1.2
+--black-level	-bl	Schwarzpunkt (0-255, niedriger = mehr Tiefe)	0
+--white-level	-wl	Weißpunkt (0-255, niedriger = mehr Kontrast)	245
+⚡ SCHALTER (BOOLEAN-OPTIONEN)
+Option	Effekt wenn gesetzt
+--no-contrast	Kontrastverstärkung AUSSCHALTEN
+--no-edge	Kantenschärfung AUSSCHALTEN
+--no-binary	Binäre Trennung AUSSCHALTEN (weichere Übergänge)
+--no-morphology	Morphologische Reinigung AUSSCHALTEN
+--no-postprocess	Nachbearbeitung AUSSCHALTEN
+--no-color	Farbverstärkung komplett AUSSCHALTEN
+--no-levels	Levels-Anpassung AUSSCHALTEN
+--no-curves	Curves-Anpassung AUSSCHALTEN
+🐛 DEBUG
+Option	Kurz	Beschreibung
+--debug	-d	Debug-Modus: Speichert zusätzliche Informationen (z.B. Masken-Visualisierung)
+--version	-v	Zeigt Versionsnummer
+📚 BEISPIELE
+VORSCHAU
+  - python riesenbild_gpu_deepseek.py --mask totenkopf.png --output vorschau.jpg --preview
+HOCHQUALITATIV
+  - python riesenbild_gpu_deepseek.py --mask totenkopf.png --output hochwertig.png --high-quality
+BENUTZERDEFINIERT
+  - python riesenbild_gpu_deepseek.py --mask logo.png --output mosaik.jpg --tile-width 150 --tile-height 100 --tiles 5000 --contrast 2.8 --saturation 1.4
+MIT ALLEN OPTIONEN
+  - python riesenbild_gpu_deepseek.py --mask komplex.png --output fertig.jpg --input-folder "C:\Bilder" --output-folder "D:\Ergebnisse" --tile-width 200 --tile-height 128 --tiles 10000 --contrast 3.0 --edge-thickness 3 --edge-multiplier 3.5 --threshold 100 --sharpen 2.5 --saturation 1.5 --vibrance 1.3 --black-level 5 --white-level 250 --no-morphology --debug
+SCHNELLER TEST
+  - python riesenbild_gpu_deepseek.py --mask test.png --output test.jpg --tile-width 30 --tile-height 20 --tiles 200 --no-postprocess
+##########################################################################
+
+
+--- 01:04 23.02.2026
+🔧 LÖSUNG 1: TILE-GRÖSSE AN DAS MASKEN-FORMAT ANPASSEN
+Für quadratische Maske (1:1):
+  - python riesenbild_gpu_deepseek.py --mask maske.png --output korrigiert.jpg --tile-width 100 --tile-height 100
+Für Hochformat-Maske (2:3):
+  - python riesenbild_gpu_deepseek.py --mask maske.png --output korrigiert.jpg --tile-width 80 --tile-height 120
+Für Querformat-Maske (3:2):
+  - python riesenbild_gpu_deepseek.py --mask maske.png --output korrigiert.jpg --tile-width 120 --tile-height 80
+
+---jn 23022026 09:52
+grosses mosaik erzeugen:
+python riesenbild.py --mask input-maske.png --output dtf-highquality_gpu_v7.png --input-folder "M:\projekte_2026\riesenbild\input" --output-folder "M:\projekte_2026\riesenbild\output" --no-edge --tiles 4000 --tile-width 200 --tile-height 200 --batch-size 2048
